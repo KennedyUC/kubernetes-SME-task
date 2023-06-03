@@ -66,13 +66,13 @@ user_access_key     = "XXXX"
 user_secret_key     = "XXXX"
 ```  
   
-**install the needed tools, if don't have them already installed**
+**install the needed tools, if not already installed**
 ``` 
 chmod +x install.sh 
 ```  
   
 ```  
-./install.sh  
+bash install.sh  
 ```  
   
 **authenticate to aws user account**  

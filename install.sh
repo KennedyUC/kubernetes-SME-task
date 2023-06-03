@@ -7,7 +7,7 @@ function log {
 
 TERRAFORM_VERSION="1.3.5"
 
-# install kubectl, if it's not already installed
+# install kubectl, if not already installed
 if ! command -v kubectl > /dev/null 2>&1; then
   log "✅ Installing kubectl"
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -18,7 +18,7 @@ fi
 
 sleep 2s
 
-# install helm, if it's not already installed
+# install helm, if not already installed
 if ! command -v helm > /dev/null 2>&1; then
   log "✅ Installing Helm"
   curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -28,7 +28,7 @@ fi
 
 sleep 2s
 
-# install yq if it's not already installed
+# install yq if not already installed
 if ! command -v yq > /dev/null 2>&1; then
   log "✅ Installing yq"
   sudo apt-get update
@@ -40,6 +40,7 @@ fi
 
 sleep 2s
 
+# install yq if not already installed
 if ! command -v terraform > /dev/null 2>&1; then
   log "✅ Installing Terraform"
   wget "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" -O terraform.zip
