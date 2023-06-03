@@ -1,0 +1,15 @@
+app:
+  name: "test-app"
+  image: "nginx"
+  tag: "latest"
+
+spec:
+  replicas: "2"
+  resources:
+    requests:
+      memory: "50Mi"
+      cpu: "20m"
+    limits:
+      memory: "500Mi"
+      cpu: "200m"
+  port: 80
