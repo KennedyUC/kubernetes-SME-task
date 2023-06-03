@@ -7,21 +7,23 @@ function log {
 
 APP_NAME="nginx"
 
-# set a default value for the nginx image tag
-img_tag="latest"
-
-while getopts ":image_tag:" opt; do
+# assign the entered image tag to a variable
+while getopts ":t:" opt; do
   case $opt in
-    image_tag) img_tag=$OPTARG;;
-    \?) log "Invalid option: -$OPTARG" >&2;;
+    t ) img_tag=$OPTARG;;
+    \? ) log "Invalid option -$OPTARG" >&2;;
   esac
 done
 
 # run terraform script
+log "✅ Provisioning the terraform resources..."
 cd terraform-main
+terraform init
+terraform get -update
 terraform apply -var-file='vars.tfvars' -auto-approve
+cd ..
 
-sleep 2m
+sleep 1m
 
 # create namespace for the helm app
 NS=$(kubectl get namespace $APP_NAME --ignore-not-found);
@@ -35,19 +37,20 @@ fi;
 sleep 2s
 
 # update the tag for the helm deployment
-yq e -i ".app.tag = $img_tag" ./helm-chart/nginx/values.yaml
+log "✅ Updating the image tag for nginx..."
+yq e -i ".app.tag |= \"${img_tag}\"" helm-chart/nginx/values.yaml
 
 sleep 2s
 
 # deploy helm app
-log "✅ deploying helm app from the helm chart package..."
-helm upgrade $APP_NAME helm-chart/ngnix --install --values ./helm-chart/ngnix/values.yaml -n $APP_NAME
+log "✅ Deploying helm app from the helm chart package..."
+helm upgrade $APP_NAME helm-chart/nginx --install --values helm-chart/nginx/values.yaml -n $APP_NAME
 log "✅ $APP_NAME successfully deployed to k8s cluster"
 
 sleep 10s
 
 # view deployed app
-log "✅ displaying the deployed app..."
+log "✅ Displaying the deployed app..."
 helm list -n $APP_NAME
 
 sleep 2s

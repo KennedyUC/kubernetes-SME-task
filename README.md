@@ -7,6 +7,39 @@
 4. GitHub Action workflow for running the tasks as an automated end-to-end pipeline  
   
 ## Codebase Structure  
+```  
+├── README.md
+├── deploy.sh
+├── install.sh
+├── helm-chart
+│   └── nginx
+│       ├── Chart.yaml
+│       ├── templates
+│       │   ├── _helpers.tpl
+│       │   ├── deployment.yaml
+│       │   └── service.yaml
+│       └── values.yaml
+|
+├── terraform-modules
+│   ├── eks_cluster
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── eks_network
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── eks_node_group
+│       ├── main.tf
+│       └── variables.tf
+|
+├── terraform-main
+│   ├── main.tf
+│   ├── provider.tf
+│   ├── variables.tf
+│   └── vars.tfvars
+```  
+
 **terraform-modules**:  
 I organized the terraform scripts as modules to make the management of the resources seamless.  
 
@@ -27,6 +60,12 @@ This directory contains the kubernetes deployment template to be deployed by hel
 I included the bash script for running the deployment in the root directory. I had to add the end-to-end workflow in the script.  
   
 ## Running the Deployment Script  
+**update the `terraform-main/vars.tfvars` file** with the correct credentials  
+```    
+user_access_key     = "XXXX"
+user_secret_key     = "XXXX"
+```  
+  
 **install the needed tools, if don't have them already installed**
 ``` 
 chmod +x install.sh 
@@ -47,4 +86,7 @@ chmod +x deploy.sh
 ```  
   
 ```  
-./deploy.sh -image_tag "alpine3.17-slim"
+bash deploy.sh -t "alpine3.17-slim"  
+```  
+  
+The flag -t is used to pass the nginx image tag to the `values.yaml` file of Helm Chart.

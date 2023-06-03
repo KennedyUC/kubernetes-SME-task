@@ -1,4 +1,4 @@
-env                 = "test"
+env                 = "dev"
 project_name        = "k8s"
 
 vpc_cidr            = "10.0.0.0/16"

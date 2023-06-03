@@ -1,8 +1,7 @@
 app:
   name: "test-app"
   image: "nginx"
-  tag: "latest"
-
+  tag: "alpine3.17-slim"
 spec:
   replicas: "2"
   resources:
